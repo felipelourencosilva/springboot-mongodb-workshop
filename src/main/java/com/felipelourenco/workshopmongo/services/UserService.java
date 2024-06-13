@@ -1,6 +1,7 @@
 package com.felipelourenco.workshopmongo.services;
 
 import com.felipelourenco.workshopmongo.domain.User;
+import com.felipelourenco.workshopmongo.dto.UserDTO;
 import com.felipelourenco.workshopmongo.repository.UserRepository;
 import com.felipelourenco.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,13 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public User insert(User user) {
+        return userRepository.insert(user);
+    }
+
+    public User fromDTO(UserDTO userDTO) {
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
     }
 }
