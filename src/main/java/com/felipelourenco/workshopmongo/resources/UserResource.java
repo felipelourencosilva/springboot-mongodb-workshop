@@ -21,20 +21,20 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method= RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> findALl() {
         List<User> users = userService.findAll();
         List<UserDTO> usersDto = users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
         return ResponseEntity.ok().body(usersDto);
     }
 
-    @RequestMapping(value = "/{id}",method= RequestMethod.GET)
+    @RequestMapping(value = "/{id}",method=RequestMethod.GET)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         User user = userService.findById(id);
         return ResponseEntity.ok().body(new UserDTO(user));
     }
 
-    @RequestMapping(method= RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
         User user = userService.fromDTO(userDTO);
         user = userService.insert(user);
@@ -42,9 +42,17 @@ public class UserResource {
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}",method= RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteById(@PathVariable String id) {
         userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}", method=RequestMethod.PUT)
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO, @PathVariable String id) {
+        User user = userService.fromDTO(userDTO);
+        user.setId(id);
+        user = userService.update(user);
         return ResponseEntity.noContent().build();
     }
 
